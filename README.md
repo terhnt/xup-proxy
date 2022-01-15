@@ -1,5 +1,5 @@
 # Description
-`xcp-proxy` is a websockets proxy for all the [Unoparty](https://unoparty.io) subsystems.
+`xup-proxy` is a websockets proxy for all the [Unoparty](https://unoparty.io) subsystems.
 
 # Installation
 For a simple Docker-based install of the Unoparty software stack, see [this guide](http://counterparty.io/docs/federated_node/).
@@ -8,7 +8,7 @@ Manual installation can be done by:
 
 ```bash
 git clone https://github.com/terhnt/xup-proxy
-cd xcp-proxy
+cd xup-proxy
 npm install
 npm start
 ```
