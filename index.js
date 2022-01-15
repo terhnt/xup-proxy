@@ -16,7 +16,7 @@ const jayson = require('jayson/promise')
 //const mariadb = require('mariadb')
 const yargs = require('yargs/yargs')
 
-const HTTP_PORT = parseInt(process.env.HTTP_PORT || 8097)
+const HTTP_PORT = parseInt(process.env.HTTP_PORT || 8197)
 const ADDRINDEXRS_URL = new URL(process.env.ADDRINDEXRS_URL || 'tcp://localhost:8122')
 const UNOPARTY_URL = process.env.UNOPARTY_URL || 'http://rpc:rpc@localhost:4120'
 const UNOBTANIUM_ZMQ_URL = process.env.UNOBTANIUM_ZMQ_URL || 'tcp://localhost:48832'
