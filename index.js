@@ -17,19 +17,19 @@ const jayson = require('jayson/promise')
 const yargs = require('yargs/yargs')
 
 const HTTP_PORT = parseInt(process.env.HTTP_PORT || 8097)
-const ADDRINDEXRS_URL = new URL(process.env.ADDRINDEXRS_URL || 'tcp://localhost:8432')
-const COUNTERPARTY_URL = process.env.COUNTERPARTY_URL || 'http://rpc:rpc@localhost:4000'
-const BITCOIN_ZMQ_URL = process.env.BITCOIN_ZMQ_URL || 'tcp://localhost:28832'
+const ADDRINDEXRS_URL = new URL(process.env.ADDRINDEXRS_URL || 'tcp://localhost:8122')
+const UNOPARTY_URL = process.env.UNOPARTY_URL || 'http://rpc:rpc@localhost:4120'
+const UNOBTANIUM_ZMQ_URL = process.env.UNOBTANIUM_ZMQ_URL || 'tcp://localhost:48832'
 const REDIS_URL = process.env.REDIS_URL || 'redis://localhost:6379/8'
 const DEFAULT_SESSION_SECRET = 'configure this!'
 const SESSION_SECRET = process.env.SESSION_SECRET || DEFAULT_SESSION_SECRET
 
-const INTERVAL_CHECK_COUNTERPARTY_PARSED = parseInt(process.env.INTERVAL_CHECK_COUNTERPARTY_PARSED || '1000')
+const INTERVAL_CHECK_UNOPARTY_PARSED = parseInt(process.env.INTERVAL_CHECK_UNOPARTY_PARSED || '1000')
 
 async function startZmq(notifiers) {
   const sock = new zmq.Subscriber
 
-  const xcpClient = jayson.client.http(COUNTERPARTY_URL)
+  const xcpClient = jayson.client.http(UNOPARTY_URL)
 
   const sleep = (ms) => new Promise(r => setTimeout(r, ms))
 
@@ -59,7 +59,7 @@ async function startZmq(notifiers) {
     }))
   }
 
-  sock.connect(BITCOIN_ZMQ_URL)
+  sock.connect(UNOBTANIUM_ZMQ_URL)
   if (notifiers && notifiers.hashtx) {
     sock.subscribe('hashtx')
   }
@@ -67,7 +67,7 @@ async function startZmq(notifiers) {
   if (notifiers && notifiers.hashblock) {
     sock.subscribe('hashblock')
   }
-  console.log(`ZMQ connected to ${BITCOIN_ZMQ_URL}`)
+  console.log(`ZMQ connected to ${UNOBTANIUM_ZMQ_URL}`)
 
   for await (const [topic, msg] of sock) {
     const topicName = topic.toString('utf8')
@@ -79,7 +79,7 @@ async function startZmq(notifiers) {
       const blockhash = msg.toString('hex')
       notifiers.hashblock(blockhash)
       if (notifiers.xcp) {
-        setTimeout(waitForCounterpartyBlock(blockhash), INTERVAL_CHECK_COUNTERPARTY_PARSED)
+        setTimeout(waitForCounterpartyBlock(blockhash), INTERVAL_CHECK_UNOPARTY_PARSED)
       }
     }
   }
